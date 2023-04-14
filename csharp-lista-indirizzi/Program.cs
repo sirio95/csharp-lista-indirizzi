@@ -9,7 +9,7 @@ namespace csharp_lista_indirizzi
     {
         static void Main(string[] args)
         {
-            List<Indirizzo> TuttiGliIndirizzi = getText("C:\\Users\\sundi\\source\\repos\\csharp-lista-indirizzi\\addresses.csv");
+            List<Indirizzo> TuttiGliIndirizzi = getTextToAddress("C:\\Users\\sundi\\source\\repos\\csharp-lista-indirizzi\\addresses.csv");
             foreach (Indirizzo idn in TuttiGliIndirizzi)
             {
                 idn.StampaVideo();
@@ -30,39 +30,16 @@ namespace csharp_lista_indirizzi
             {
                 try
                 {
-                    Name = name;
-                    Surname = surname;
-                    Street = street;
-                    City = city;
-                    Province = province;
-                    ZIP = zip;
+                    this.Name = name;
+                    this.Surname = surname;
+                    this.Street = street;
+                    this.City = city;
+                    this.Province = province;
+                    this.ZIP = zip;
                 }
                 catch (Exception e)
-                { 
-                    if(name == null)
-                    {
-                        Console.WriteLine("Il nome non può essere nullo");
-                    }
-                    else if(surname == null)
-                    {
-                        Console.WriteLine("Il cognome non può essere nullo");
-                    }
-                    else if(street == null)
-                    {
-                        Console.WriteLine("La strada non può essere nulla");
-                    }
-                    else if(city == null)
-                    {
-                        Console.WriteLine("La città non può essere nulla");
-                    }
-                    else if(province == null)
-                    {
-                        Console.WriteLine("La provincia non può essere nulla");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Il codice postale non può essere nullo");
-                    }
+                {
+                    Console.WriteLine(e.Message);
                 }
             }
 
@@ -72,7 +49,7 @@ namespace csharp_lista_indirizzi
             }
         }
 
-        public static List<Indirizzo> getText(string path)
+        public static List<Indirizzo> getTextToAddress(string path)
         {
 
             List<Indirizzo> AllAddress= new List<Indirizzo>();
@@ -81,17 +58,16 @@ namespace csharp_lista_indirizzi
 
             foreach(string line in textLines)
             {
-                int separatore = line.IndexOf(',');
-                string nome = line.Substring(0, separatore);
-                string cognome =line.Substring(separatore+1);
-                string strada = line.Substring(separatore + 2);
-                string città = line.Substring(separatore + 3);
-                string provincia= line.Substring(separatore + 4);
-                string zip = line.Substring (separatore + 5);
-
-
-                Indirizzo newIndirizzo = new Indirizzo(nome, cognome, strada, città, provincia, zip);
-                AllAddress.Add(newIndirizzo);
+                string[] element = line.Split(",");
+                if (element.Length == 6)
+                {
+                    if (element[0] != "" && element[1] != "" && element[2] != "" && element[3] != "" && element[4] != "" && element[5] != "")
+                    {
+                        Indirizzo newIndirizzo = new Indirizzo(element[0], element[1], element[2], element[3], element[4], element[5]);
+                        AllAddress.Add(newIndirizzo);
+                    }                
+                    
+                }                
             }
             return AllAddress;
         }
